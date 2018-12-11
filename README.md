@@ -33,7 +33,7 @@ Also note that I can add a lincese in the future if it would be relevant to the 
 
 **This application is an example application that is intended to show my skills in programming in the C language.** Its purpose is only to show code that is know to work. While probably nothing dangerous would happen, you may run it only under your own responsibility.
 
-Although I have made efforts to make it work as intended and described, it is not a "proffesional" application. Specifically, it was not tested in terms of separate unit tests or similar. It was tested to work only on one platform. Specifically, it deals with memory, and that never may be safe at all. For details on the platform, see the [section "Tools and technologies used"](#tools-and-technologies-used) of this readme.
+Although I have made efforts to make it work as intended and described, it is not a "proffesional" application. Specifically, it was not tested in terms of separate unit tests or similar. It was tested to work only on one platform. Specifically, it deals with memory, and that never may be safe at all. For details on the platform, see the section ["Tools and technologies used"](#tools-and-technologies-used) of this readme.
 
 ## How does this utility work?
 
@@ -100,7 +100,7 @@ All the supported comment types are listed in the following table:
 
 |No.|Comment type|How is a comment marked|Example|Remarks|
 |-|-|-|-|-|
-|1|[Inline comment](https://en.wikipedia.org/wiki/Comparison_of_programming_languages_(syntax)#Inline_comments)|Two consecutive `/` (`U+002F`) characters at the beginning of a comment|`// this is an inline comment`|Supported by many programming languages – for example C, Java, PHP, Javascript|
+|1|[Inline comment](https://en.wikipedia.org/wiki/Comparison_of_programming_languages_(syntax)#Inline_comments)|Two consecutive `/` (`U+002F`) characters at the beginning of a comment|`// this is an inline comment`|Supported by many programming languages – for example C, Java, PHP, JavaScript|
 
 ## Example
 
