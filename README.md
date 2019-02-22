@@ -1,4 +1,6 @@
-# forcom – format comments
+[![Build Status](https://travis-ci.org/silvuss/silvuss-forcom.svg?branch=master)](https://travis-ci.org/silvuss/silvuss-forcom)
+
+# forcom – Format comments
 
 forcom (FORmat COMments) is a utility that allows the user format [comments](https://en.wikipedia.org/wiki/Comment_(computer_programm`in`g)) that a given file contains. The file's content may be any content that contains comments, e.g. source code.
 
@@ -11,29 +13,25 @@ forcom (FORmat COMments) is a utility that allows the user format [comments](htt
 3. [How does this utility work?](#how-does-this-utility-work)
 4. [How to run this utility?](#how-to-run-this-utility)
 5. [Process details](#process-details)
-6. [Supported comments](#supported-comments)
+6. [Supported comment types](#supported-comment-types)
 7. [Example](#example)
 8. [Current major problems](#current-major-problems)
-9. [Tools and technologies used](#tools-and-technologies-used)
-10. [I have experienced a bug / a problem, or I have an idea of improvement – what can I do?](#i-have-experienced-a-bug-/-a-problem-or-i-have-an-idea-of-improvement-–-what-can-i-do)
-11. [Will this project be updated?](#will-this-project-be-updated)
-
+9. [Environment, tools and technologies used](#environment-tools-and-technologies-used)
 
 ## Copyright note
 
-Note that this "silvuss-thoughts" project (this repository) has currently **no license**, as explained in [this GitHub guide on licensing projects](https://choosealicense.com/no-permission/).
+Note that this "forcom" project (this repository) has currently **no license**, as explained in [this GitHub guide on licensing projects](https://choosealicense.com/no-permission/).
 
 For your convenience, I am including below a quote from that site:
-
 > When you make a creative work (which includes code), the work is under exclusive copyright by default. Unless you include a license that specifies otherwise, nobody else can use, copy, distribute, or modify your work without being at risk of take-downs, shake-downs, or litigation. Once the work has other contributors (each a copyright holder), “nobody” starts including you.
 
 Also note that I can add a lincese in the future if it would be relevant to the needs of this project.
 
 ## Disclaimers
 
-**This application is an example application that is intended to show my skills in programming in the C language.** Its purpose is only to show code that is know to work. While probably nothing dangerous would happen, you may run it only under your own responsibility.
+**This application is an example application that is not intended to be run.** Its purpose is only to show code that is known to work. While probably nothing dangerous would happen, you may run it only under your own responsibility.
 
-Although I have made efforts to make it work as intended and described, it is not a "proffesional" application. Specifically, it was not tested in terms of separate unit tests or similar. It was tested to work only on one platform. Specifically, it deals with memory, and that never may be safe at all. For details on the platform, see the section ["Tools and technologies used"](#tools-and-technologies-used) of this readme.
+Although I have made efforts to make it work as intended and described, it is not a "proffessional" application. Specifically, it was not tested in terms of separate unit tests or similar. It was tested to work only on one platform. Specifically, it deals with memory, and that never may be safe at all. For details on the platform, see the section ["Environment, tools and technologies used"](#environment-tools-and-technologies-used) of this README.
 
 ## How does this utility work?
 
@@ -94,7 +92,7 @@ This utility works in the following way:
 
 6. If it contains anything other than comment, then the utility writes the line to the output file; then, it splits the rest that is left after splitting the last line until the length of the rest is greater than the value of the `intendedLength` parameter; after each splitting, it writes the first part of the splitting to the output file. Finally, it writes all the rest that is left to the next line.
 
-## Supported comments
+## Supported comment types
 
 All the supported comment types are listed in the following table:
 
@@ -150,17 +148,9 @@ for (; i < 10; ++i) {
 
 Currently, according to the value of the `intendedLength` parameter, some words in the comments may be unintentionally divided into two parts, the first part being left in one line, and the second part being moved to the next line.
 
-## Tools and technologies used
+## Environment, tools and technologies used
 
 1. This utility is written for the greater part in the [C programming language](https://en.wikipedia.org/wiki/C_(programming_language)), and for the smaller part in the [makefile language](https://en.wikipedia.org/wiki/Make_(software)#Makefile).
-2. The compiler used to compile it for testing is the [GNU GCC](https://gcc.gnu.org/), version 8.2.1 20181105 (Red Hat 8.2.1-5) (GCC).
+2. The compiler used to compile it is the [GNU GCC](https://gcc.gnu.org/), version 8.2.1 20181105 (Red Hat 8.2.1-5) (GCC).
 3. The operating system used to compile and test it is Linux; distribution: [Fedora](https://getfedora.org/) Workstation 29; [kernel](https://www.kernel.org/) version: 4.19.6-300.fc29.x86_64.
 4. The architecture of the processor used to run the operating system is x86-64.
-
-## I have experienced a bug / a problem, or I have an idea of improvement – what can I do?
-
-In case you have experienced any bug, any problem or just have an idea how to improve this utility, you may report it within this project using the GitHub Issues.
-
-## Will this project be updated?
-
-If you have found any bug or have an idea, it may be incorporated to let the project live. But, generally, this project is going to show what I have learned in C by the time that it was published – so, it is not supposed to be updated greatly.
