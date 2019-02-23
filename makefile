@@ -6,6 +6,7 @@ BIN = ./bin
 DEBUG_BIN = ./bin_debug
 NAME = forcom
 DEBUG_NAME = forcom_debug
+MODE = c99
 
 # do not miss the dot below
 OBJ = .
@@ -17,14 +18,14 @@ RMDIR = rmdir
 default: ${OBJ}/misc.o ${OBJ}/output.o ${OBJ}/readline.o ${OBJ}/main.o
 	-${RM} ${BIN}/${NAME}
 	-${MKDIR} ${BIN}
-	${CC} $^ -o ${BIN}/${NAME}
+	${CC} $^ -std=${MODE} -o ${BIN}/${NAME}
 	-${RM} $^
 
 .PHONY: debug
 debug: ${OBJ}/misc.o ${OBJ}/output.o ${OBJ}/readline.o ${OBJ}/main.o
 	-${RM} ${DEBUG_BIN}/${DEBUG_NAME}
 	-${MKDIR} ${DEBUG_BIN}
-	${CC} $^ -o ${DEBUG_BIN}/${DEBUG_NAME}
+	${CC} $^ -std=${MODE} -o ${DEBUG_BIN}/${DEBUG_NAME}
 
 .PHONY: clean
 clean:
@@ -35,13 +36,13 @@ clean:
 	-${RMDIR} ${DEBUG_BIN}
 
 ${OBJ}/misc.o: ${SRC}/misc.c ${SRC}/misc.h
-	${CC} -c ${SRC}/misc.c
+	${CC} -std=${MODE} -c ${SRC}/misc.c
 
 ${OBJ}/output.o: ${SRC}/output.c ${SRC}/output.h
-	${CC} -c ${SRC}/output.c
+	${CC} -std=${MODE} -c ${SRC}/output.c
 
 ${OBJ}/readline.o: ${SRC}/readline.c ${SRC}/readline.h
-	${CC} -c ${SRC}/readline.c
+	${CC} -std=${MODE} -c ${SRC}/readline.c
 
 ${OBJ}/main.o: ${SRC}/main.c
-	${CC} -c ${SRC}/main.c
+	${CC} -std=${MODE} -c ${SRC}/main.c
