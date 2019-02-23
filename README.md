@@ -54,7 +54,7 @@ There are several ways and many tools to run a C program having its source files
 |1|`make`|Default. Causes the utility to be compiled using a compiler available by the `gcc` command. Creates the `bin` subdirectory if it does not exist.|One executable file `bin/forcom`|
 |2|`make default`|(same as `make`)|(same as `make`)|
 |3|`make debug`|Causes the utility to be compiled using a compiler available by the `gcc` command with some debug parameters. For the list of parameters, see the `makefile` file. Creates the `bin_debug` directory if it does not exist.|One executable file `bin_debug/forcom_debug` and one object file (extension `.o`) for each of the source files (extension `.c`) in the `src` subdirectory|
-|4|`make clean`|Removes all the files and directories that were created either by executing `make` or `make debug`. If some of the directories or files are not intended to be removed, do not use this command; instead, if needed, remove the appropriate files yourself.|---|
+|4|`make clean`|Removes all the files and directories that were created either by executing `make` or `make debug`. If some of the directories or files are not intended to be removed, do not use this command – instead, if needed, remove the appropriate files yourself.|---|
 
 To compile, open the terminal, go into the utility main directory and execute one of the commands listed in the table above.
 
@@ -65,8 +65,8 @@ In the case of this utility, the simplest way will be opening the terminal, goin
 $ ./bin/forcom FILE_1 FILE_2
 ```
 where:
-- `FILE_1` is the input file path; it should be the path to a readable file containing comments to format.
-- `FILE_2` is the output file path; it should be the path to an output file that will be created.
+- `FILE_1` is the input file path; it should be path to a readable file containing comments to format.
+- `FILE_2` is the output file path; it should be path to an output file that will be created.
 
 **Tip:** If only names of the files will be specified, it will be assumed that the path for each of them is the path to the current directory.
 
@@ -75,6 +75,8 @@ If any errors will occur during compilation, it probably means that the platform
 ---
 
 <sup>1</sup> On the internet, it is generally mentioned that you should compile a C program **separately for each [platform](https://en.wikipedia.org/wiki/Computing_platform)** that you want to run the program on (for reasons, see for example [this Stack Overflow thread](https://stackoverflow.com/questions/48235579/why-do-we-need-to-compile-for-different-platforms-e-g-windows-linux) and [this another Stack Overflow thread](https://stackoverflow.com/questions/33238345/are-c-applications-cross-platform)). That is why I have not published any single executable file or script. Instead, alongside the source files I have published a makefile that allows the user compile this utility for the platform that they want to use it on (in theory). For details on why a makefile may or may not be necessary in some cases, see for example [this StackExchange thread](https://softwareengineering.stackexchange.com/questions/273581/is-a-makefile-really-needed).
+
+---
 
 ## Process details
 
@@ -146,11 +148,26 @@ for (; i < 10; ++i) {
 
 ## Current major problems
 
-Currently, according to the value of the `intendedLength` parameter, some words in the comments may be unintentionally divided into two parts, the first part being left in one line, and the second part being moved to the next line.
+Currently, depending on the value of the `intendedLength` parameter, some words in the comments may be unintentionally divided into two parts, the first part being left in one line, and the second part being moved to the next line.
 
 ## Environment, tools and technologies used
 
-1. This utility is written for the greater part in the [C programming language](https://en.wikipedia.org/wiki/C_(programming_language)), and for the smaller part in the [makefile language](https://en.wikipedia.org/wiki/Make_(software)#Makefile).
-2. The compiler used to compile it is the [GNU GCC](https://gcc.gnu.org/), version 8.2.1 20181105 (Red Hat 8.2.1-5) (GCC).
-3. The operating system used to compile and test it is Linux; distribution: [Fedora](https://getfedora.org/) Workstation 29; [kernel](https://www.kernel.org/) version: 4.19.6-300.fc29.x86_64.
-4. The architecture of the processor used to run the operating system is x86-64.
+1. Programming languages:
+    - [C language](https://en.wikipedia.org/wiki/C_(programming_language)) (the whole utility except the `makefile` file) – C99 standard;
+    - [makefile language](https://en.wikipedia.org/wiki/Make_(software)#Makefile) (only the `makefile` file).
+2. There was used two environments to compile this utility:
+    1. First one:
+        - The compiler used to compile it is the [GNU GCC](https://gcc.gnu.org/), version 8.2.1 20181105 (Red Hat 8.2.1-5) (GCC).
+        - The operating system used to compile it is Linux; distribution: [Fedora](https://getfedora.org/) Workstation 29; [kernel](https://www.kernel.org/) version: 4.19.6-300.fc29.x86_64.
+        - The architecture of the processor used to run the operating system is x86-64.
+    2. Second one: default Travis CI environment for the C language; for details, see the following sections in the Travis CI documentation: [CI environment for C Projects](https://docs.travis-ci.com/user/languages/c/#ci-environment-for-c-projects) and [Infrastructure and environment notes](https://docs.travis-ci.com/user/for-beginners/#infrastructure-and-environment-notes).
+3. The operating system used to test it is the same as the first one for compilation.
+4. The architecture of the processor used to run the operating system for testing is x86-64.
+
+### A note about Travis CI's configuration
+
+I use [Travis CI](https://travis-ci.org/) publishing this project on GitHub. In order that this project build configuration conforms to the default build configuration that Travis uses for projects written in the C language, I had to set the `script` parameter in the `.travis.yml` configuration file to `make`.
+
+Also, in order that this project conforms to the default configuration of the gcc compiler version that Travis uses, I had to change the `gcc` command in the makefile to use the C99 C standard.
+
+For details on the default Travis's configuration for projects written in the C language, see the article "[Building a C Project](https://docs.travis-ci.com/user/languages/c/)" in Travis's documentation.
