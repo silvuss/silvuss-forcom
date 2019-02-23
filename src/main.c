@@ -8,9 +8,9 @@
 #include "output.h"
 #include "misc.h"
 
-// advice: learning pointers, "segmentation fault" is your friend
-// advice: gcc with "-Wall" and "-Wextra" parameters may be good some deeply hidden errors
-// advice: the "bad address" error may mean something like "not linked" -> do not use the "-c" option of gcc unless necessary
+// Advice: learning pointers, "segmentation fault" is your friend.
+// Advice: running gcc with "-Wall" and "-Wextra" parameters may be good for some deeply hidden errors.
+// Advice: the "bad address" error may mean something like "not linked" -> do not use the "-c" option of gcc unless necessary.
 int main(int argc, char *argv[])
 {
     if (argc < 3)
@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
 
-    // argv[0] is the name of this .c file
+    // argv[0] is the name of this file.
     const size_t inputFileNameLength = strlen(argv[1]);
     char *const inputFileName = calloc(inputFileNameLength, sizeof(argv[1]));
     strcpy(inputFileName, argv[1]);
@@ -47,12 +47,12 @@ int main(int argc, char *argv[])
         exit(errno);
     }
 
-    // main processing
+    // Main processing.
 
     char *line = NULL;
     unsigned long start = 0;
     bool wasCommentLine = false;
-    unsigned long intendedGroupLength = 30;
+    unsigned long intendedGroupLength = 10;
     char *partToMove = malloc(1);
     memset(partToMove, '\0', 1);
     while ((line = readLine(inputFile, start)))
@@ -61,13 +61,14 @@ int main(int argc, char *argv[])
         {
             if (true == wasCommentLine)
             {
-                // it is "normal line"
+                // It is "normal line".
 
-                // handle case that partToMove is not empty
-                //  (i.e. there is still string remaining)
                 while (strlen(partToMove) > intendedGroupLength)
                 {
-                    // copy first part
+                    // Handle case that partToMove is not empty
+                    //  (i.e. there is still string remaining).
+
+                    // Copy first part.
                     fputs("// ", outputFile);
                     for (unsigned long i = 0; i < intendedGroupLength; ++i)
                     {
@@ -75,7 +76,7 @@ int main(int argc, char *argv[])
                     }
                     fputc('\n', outputFile);
 
-                    // create new part to move
+                    // Create new part to move.
                     const size_t newPartToMoveLength = strlen(partToMove) - intendedGroupLength + 2; // +1 for one space after the string, +1 for NULL terminator
                     char *newPartToMove = malloc(newPartToMoveLength);
                     memset(newPartToMove, '\0', newPartToMoveLength);
@@ -84,14 +85,15 @@ int main(int argc, char *argv[])
                     partToMove = newPartToMove;
                 }
 
-                // copy last line if it is not empty
                 if (strlen(partToMove) > 0)
                 {
+                    // Last line is not empty, so copy it.
+
                     fputs("// ", outputFile);
                     fputs(partToMove, outputFile);
                     if (NULL != readLine(inputFile, start + strlen(line) + 1))
                     {
-                        // if it is not last line in file
+                        // It is not last line in file.
                         fputc('\n', outputFile);
                     }
                 }
@@ -103,11 +105,11 @@ int main(int argc, char *argv[])
         }
         else
         {
-            // it is "comment line"
+            // It is "comment line".
 
             if (false == wasCommentLine)
             {
-                // it is new group
+                // It is new group.
 
                 partToMove = realloc(partToMove, 1);
                 if (partToMove == NULL)
@@ -118,7 +120,7 @@ int main(int argc, char *argv[])
                 memset(partToMove, '\0', 1);
             }
 
-            // remove slashes and optional space
+            // Remove slashes and optional space.
             unsigned int toLeft = (line[2] == ' ' ? 3 : 2);
             const size_t lineWithoutSlashesLength = strlen(line) - toLeft + 1; // +1 for NULL terminator
             char *lineWithoutSlashes = malloc(lineWithoutSlashesLength);
@@ -132,9 +134,15 @@ int main(int argc, char *argv[])
             memcpy(combinedLine + strlen(partToMove), lineWithoutSlashes, strlen(lineWithoutSlashes));
             memset(combinedLine + combinedLineLength - 1, '\0', 1);
 
+            printf("\ncurrent comment line == '%s'", line);
+            printf("\n\tstrlen(combinedLine) == '%d'", strlen(combinedLine));
+            printf("\n\tintendedGroupLength == '%d'", intendedGroupLength);
+            printf("\n");
             if (strlen(combinedLine) > intendedGroupLength)
             {
-                // copy first part
+                // This comment line is longer than intended length of group.
+
+                // Copy first part.
                 fputs("// ", outputFile);
                 for (unsigned long i = 0; i < intendedGroupLength; ++i)
                 {
@@ -142,7 +150,7 @@ int main(int argc, char *argv[])
                 }
                 fputc('\n', outputFile);
 
-                // create new part to move
+                // Create new part to move.
                 const size_t newPartToMoveLength = strlen(combinedLine) - intendedGroupLength + 2; // +1 for one space after the string, +1 for NULL terminator
                 if (newPartToMoveLength > 2)
                 {
@@ -157,6 +165,17 @@ int main(int argc, char *argv[])
                 memset(partToMove + newPartToMoveLength - 2, ' ', 1);
                 memset(partToMove + newPartToMoveLength - 1, '\0', 1);
             }
+            else
+            {
+                // This comment line is shorter than intended length of group.
+
+                fputs("// ", outputFile);
+                for (unsigned long i = 0; i < strlen(combinedLine); ++i)
+                {
+                    fputc(combinedLine[i], outputFile);
+                }
+                fputc('\n', outputFile);
+            }
 
             free(combinedLine);
 
@@ -166,7 +185,7 @@ int main(int argc, char *argv[])
         start += strlen(line) + 1;
     }
 
-    // cleaning
+    // Cleaning.
 
     free(inputFileName);
     free(outputFileName);
