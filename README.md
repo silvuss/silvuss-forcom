@@ -2,27 +2,26 @@
 
 # forcom – Format comments
 
-forcom (FORmat COMments) is a utility that allows the user format [comments](https://en.wikipedia.org/wiki/Comment_(computer_programm`in`g)) that a given file contains. The file's content may be any content that contains comments, e.g. source code.
+forcom (FORmat COMments) is a utility that allows the user format [comments](https://en.wikipedia.org/wiki/Comment_(computer_programming)) that a given file contains. The file's content may be any content that contains comments (e.g. source code).
 
-**Read before use:** This application **is not** intended to be used according to the purpose described above. You may use it **only** to test whether the code is written the way it is expected (i.e. it produces expected results) and **only** when you know what the code will really do. For details, see the section ["Disclaimers"](#disclaimers) of this readme.
+**Read before use:** This utility **is not** intended to be used according to the purpose described above. You may use it **only** to test whether the code is written the way it is expected to be (i.e. it produces expected results) and **only** when you know what the code will really do. For details, see the section "[Disclaimers](#disclaimers)" of this README.
 
 ## Table of contents
 
 1. [Copyright note](#copyright-note)
 2. [Disclaimers](#disclaimers)
-3. [How does this utility work?](#how-does-this-utility-work)
-4. [How to run this utility?](#how-to-run-this-utility)
-5. [Process details](#process-details)
-6. [Supported comment types](#supported-comment-types)
-7. [Example](#example)
-8. [Current major problems](#current-major-problems)
-9. [Environment, tools and technologies used](#environment-tools-and-technologies-used)
+3. [How to install and run this utility?](#how-to-install-and-run-this-utility)
+4. [How does this utility work (in general)?](#how-does-this-utility-work-in-general)
+5. [Example](#example)
+6. [Environment, tools and technologies used](#environment-tools-and-technologies-used)
+7. [Details](#details)
 
 ## Copyright note
 
 Note that this "forcom" project (this repository) has currently **no license**, as explained in [this GitHub guide on licensing projects](https://choosealicense.com/no-permission/).
 
 For your convenience, I am including below a quote from that site:
+
 > When you make a creative work (which includes code), the work is under exclusive copyright by default. Unless you include a license that specifies otherwise, nobody else can use, copy, distribute, or modify your work without being at risk of take-downs, shake-downs, or litigation. Once the work has other contributors (each a copyright holder), “nobody” starts including you.
 
 Also note that I can add a lincese in the future if it would be relevant to the needs of this project.
@@ -33,21 +32,17 @@ Also note that I can add a lincese in the future if it would be relevant to the 
 
 Although I have made efforts to make it work as intended and described, it is not a "proffessional" application. Specifically, it was not tested in terms of separate unit tests or similar. It was tested to work only on one platform. Specifically, it deals with memory, and that never may be safe at all. For details on the platform, see the section ["Environment, tools and technologies used"](#environment-tools-and-technologies-used) of this README.
 
-## How does this utility work?
-
-Firstly, this utility gets the content of the specified input file. Then, it writes every line to the newly created output file – and when it come across a _block of lines with comments_, it formats the block in a way that the  length of each line of this block is less or equal to the value of the `intendedLength` parameter. The length of a line is computed as the number of characters. Currently, the length of the `intendedLength` parameter cannot be changed and equals `30`.
-
-## How to run this utility?
+## How to install and run this utility?
 
 This utility is intended to be run in the console, on a Linux system. Before running, it has to be compiled.
 
 ### Compiling
 
-There are two formal prerequisites to be able to successfully compile it:
-1. In order to interpret the `makefile` file, your operating system (Linux or other) has to provide an implementation of the [make utility](https://en.wikipedia.org/wiki/Make_(software)).
+There are two formal prerequisites to be able to successfully compile this utility:
+1. In order to interpret the `makefile` file, the operating system (Linux or other) must provide an implementation of the [make utility](https://en.wikipedia.org/wiki/Make_(software)).
 2. The shell that you will use has to provide three commands: the [rm command](https://en.wikipedia.org/wiki/Rm_(Unix)), the [rmdir command](https://en.wikipedia.org/wiki/Rmdir) and the [mkdir command](https://en.wikipedia.org/wiki/Mkdir).
 
-There are several ways and many tools to run a C program having its source files.<sup>1</sup> In the case of this utility, the simplest way will using the `make` command (provided by the aforementioned make utility). All the supported commands are listed in the following table:
+There are several ways and many tools to compile a C program having its source files.<sup>1</sup> In the case of this utility, the simplest way will using the `make` command (provided by the aforementioned make utility). All the supported commands are listed in the following table:
 
 |No.|Command|Description|Output files|
 |-|-|-|-|
@@ -60,10 +55,12 @@ To compile, open the terminal, go into the utility main directory and execute on
 
 ### Running
 
-In the case of this utility, the simplest way will be opening the terminal, going into the utility main directory and executing the following command (`$` is the user prompt):
+In the case of this utility, the simplest way will be opening the terminal, going into the utility's main directory and executing the following command (`$` is the user prompt):
+
 ```
 $ ./bin/forcom FILE_1 FILE_2
 ```
+
 where:
 - `FILE_1` is the input file path; it should be path to a readable file containing comments to format.
 - `FILE_2` is the output file path; it should be path to an output file that will be created.
@@ -78,29 +75,9 @@ If any errors will occur during compilation, it probably means that the platform
 
 ---
 
-## Process details
+## How does this utility work (in general)?
 
-This utility works in the following way:
-
-1. After it is run, it gets its arguments. If there is less or more than two arguments, it writes a message to [stdout](https://en.wikipedia.org/wiki/Standard_streams#Standard_output_(stdout)) and exits.
-
-2. If there are exactly two arguments, it checks whether the first is the path to a readable file. If it is, then it opens the file to read. If it is not (either the file does not exist or is not readable), it writes a message to stdout and exits.
-
-3. It checks whether the second argument is the path to a writable file. If it is, then it appends the number `1` as many times, as there is no file with the result name. If it is not, then it creates one in the current directory and opens it to write. For example, if the name provided as argument is `example-output`, the result name will be `example-output1`; if the name provided is `example-output1`, the result name will be `example-output11`; and so on.
-
-4. For each line in the input file, it checks whether the line contains only comment or anything other than that.
-
-5. If it contains only comment, then it checks whether the value of the `intendedLength` parameter is less than the current line length or not. If it is, then the utility writes the part of the line that has the length equal to the `intendedLength` parameter to the output file, and copies the rest of the line to the beginning of the next line. If it is not, then the utility writes the whole line to the output file.
-
-6. If it contains anything other than comment, then the utility writes the line to the output file; then, it splits the rest that is left after splitting the last line until the length of the rest is greater than the value of the `intendedLength` parameter; after each splitting, it writes the first part of the splitting to the output file. Finally, it writes all the rest that is left to the next line.
-
-## Supported comment types
-
-All the supported comment types are listed in the following table:
-
-|No.|Comment type|How is a comment marked|Example|Remarks|
-|-|-|-|-|-|
-|1|[Inline comment](https://en.wikipedia.org/wiki/Comparison_of_programming_languages_(syntax)#Inline_comments)|Two consecutive `/` (`U+002F`) characters at the beginning of a comment|`// this is an inline comment`|Supported by many programming languages – for example C, Java, PHP, JavaScript|
+Firstly, this utility gets the content of the file specified as its input. Then, it creates a new file and starts to scan the content line by line. When it come across _a line_ or _a block of lines with comments_, it formats them in a specified way; otherwise, it writes the line as is to the created file. The formatting is the following: the length of each line of a block should be less or equal to the value of the `intendedLength` parameter. The length of a line is computed as the number of characters. Currently, the length of the `intendedLength` parameter cannot be changed and equals `30`.
 
 ## Example
 
@@ -146,10 +123,6 @@ for (; i < 10; ++i) {
 // mment another
 ```
 
-## Current major problems
-
-Currently, depending on the value of the `intendedLength` parameter, some words in the comments may be unintentionally divided into two parts, the first part being left in one line, and the second part being moved to the next line.
-
 ## Environment, tools and technologies used
 
 1. Programming languages:
@@ -171,3 +144,10 @@ I use [Travis CI](https://travis-ci.org/) publishing this project on GitHub. In 
 Also, in order that this project conforms to the default configuration of the gcc compiler version that Travis uses, I had to change the `gcc` command in the makefile to use the C99 C standard.
 
 For details on the default Travis's configuration for projects written in the C language, see the article "[Building a C Project](https://docs.travis-ci.com/user/languages/c/)" in Travis's documentation.
+
+## Details
+
+For detailed information about this project, see [this project wiki](https://github.com/silvuss/silvuss-forcom/wiki). Particularly, the wiki includes:
+- [the details of text processing that this utility performs](https://github.com/silvuss/silvuss-forcom/wiki/Process-details);
+- [what comment types are currently supported](https://github.com/silvuss/silvuss-forcom/wiki/Supported-comment-types);
+- [major problems that this utility (currently) cannot handle](https://github.com/silvuss/silvuss-forcom/wiki/Current-major-problems).
